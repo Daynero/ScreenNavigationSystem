@@ -1,4 +1,4 @@
-public enum PanelType
+public enum ScreenName
 {
     First,
     Second

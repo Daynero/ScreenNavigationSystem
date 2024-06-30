@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace;
-using PanelsNavigationModule;
+using FirstScreen;
+using SecondScreen;
 using UnityEngine;
 
 public class CompositionRoot : MonoBehaviour
 {
     [Header("Root Objects")]
     [SerializeField] private Transform allScreensContainer;
-    [SerializeField] private PanelDatabase panelDatabase;
-    [SerializeField] private PanelType defaultPanelType;
+    [SerializeField] private ScreenDatabase screenDatabase;
+    [SerializeField] private ScreenName defaultScreenName;
 
-    private Dictionary<PanelType, AbstractPanelMono> _panels = new Dictionary<PanelType, AbstractPanelMono>();
-    private Dictionary<AbstractPanelMono, AbstractPanelController> _controllers = new Dictionary<AbstractPanelMono, AbstractPanelController>();
+    private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
+    private readonly Dictionary<AbstractScreenView, AbstractScreenController> _controllers = new();
     private ScreenNavigationSystem _screenNavigationSystem;
 
     private void Awake()
@@ -22,35 +22,36 @@ public class CompositionRoot : MonoBehaviour
 
     private void Initialize()
     {
-        _screenNavigationSystem = new ScreenNavigationSystem(_panels, defaultPanelType);
+        _screenNavigationSystem = new ScreenNavigationSystem(_screens, defaultScreenName);
         
-        foreach (PanelType panelType in Enum.GetValues(typeof(PanelType)))
+        foreach (ScreenName screenName in Enum.GetValues(typeof(ScreenName)))
         {
-            var panelPrefab = panelDatabase[panelType];
-            if (panelPrefab != null)
+            var screenView = screenDatabase[screenName];
+            if (screenView != null)
             {
-                var panelInstance = Instantiate(panelPrefab, allScreensContainer);
-                panelInstance.gameObject.SetActive(false);
+                var screenViewInstance = Instantiate(screenView, allScreensContainer);
+                screenViewInstance.gameObject.SetActive(false);
 
-                AbstractPanelController controller;
-                switch (panelType)
+                AbstractScreenController controller;
+                switch (screenName)
                 {
-                    case PanelType.First:
-                        controller = new FirstPanelController(panelInstance as First, _screenNavigationSystem);
+                    case ScreenName.First:
+                        controller = new FirstScreenController(screenViewInstance as FirstScreenView, _screenNavigationSystem);
                         break;
-                    case PanelType.Second:
-                        controller = new SecondPanelController(panelInstance as Second, _screenNavigationSystem);
+                    case ScreenName.Second:
+                        controller = new SecondScreenController(screenViewInstance as SecondScreenView, _screenNavigationSystem);
                         break;
                     default:
-                        controller = new AbstractPanelController(panelInstance, _screenNavigationSystem);
+                        controller = new AbstractScreenController(screenViewInstance, _screenNavigationSystem);
                         break;
                 }
 
-                _panels.Add(panelType, panelInstance);
-                _controllers.Add(panelInstance, controller);
+                _screens.Add(screenName, screenViewInstance);
+                _controllers.Add(screenViewInstance, controller);
             }
         }
 
-        _screenNavigationSystem.ShowScreen(defaultPanelType);
+        _screenNavigationSystem.InitControllers(_controllers);
+        _screenNavigationSystem.ShowScreen(defaultScreenName);
     }
 }

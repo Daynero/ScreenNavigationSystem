@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))] 
-public abstract class AbstractPanelMono : MonoBehaviour
+public abstract class AbstractScreenView : MonoBehaviour
 {
-    public abstract PanelType PanelType { get; }
+    public abstract ScreenName ScreenName { get; }
 
     private CanvasGroup _canvasGroup;
 

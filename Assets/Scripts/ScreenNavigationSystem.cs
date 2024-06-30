@@ -1,43 +1,68 @@
 using System.Collections.Generic;
-using PanelsNavigationModule.Animations;
+using Animations;
 using UnityEngine;
 
-namespace PanelsNavigationModule
+public class ScreenNavigationSystem
 {
-    public class ScreenNavigationSystem
+    private Dictionary<ScreenName, AbstractScreenView> _screens;
+    private Dictionary<AbstractScreenView, AbstractScreenController> _controllers;
+    private ScreenName _currentScreenName;
+
+    public ScreenNavigationSystem(Dictionary<ScreenName, AbstractScreenView> screens, ScreenName initialScreenName)
     {
-        private Dictionary<PanelType, AbstractPanelMono> _panels;
-        private PanelType _currentPanelType;
+        _screens = screens;
+        _currentScreenName = initialScreenName;
+    }
 
-        public ScreenNavigationSystem(Dictionary<PanelType, AbstractPanelMono> panels, PanelType initialPanelType)
+    public void InitControllers(Dictionary<AbstractScreenView, AbstractScreenController> controllers) =>
+        _controllers = controllers;
+
+    public void ShowScreen(ScreenName screenName,
+        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
+    {
+        if (!IsScreenAvailable(screenName)) 
+            return;
+        
+        SwitchScreen(screenName, transitionDirection);
+    }
+
+    public void ShowScreenWithData(ScreenName screenName, object data,
+        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
+    {
+        if (!IsScreenAvailable(screenName)) 
+            return;
+        
+        var nextScreen = SwitchScreen(screenName, transitionDirection);
+        _controllers[nextScreen].ShowWithData(data);
+    }
+
+    private bool IsScreenAvailable(ScreenName screenName)
+    {
+        if (_screens.ContainsKey(screenName)) return true;
+        
+        Debug.LogError($"Screen name {screenName} not found in screens.");
+        return false;
+
+    }
+
+    private AbstractScreenView SwitchScreen(ScreenName screenName, ScreenTransitionDirection transitionDirection)
+    {
+        AbstractScreenView currentScreen = _screens[_currentScreenName];
+        AbstractScreenView nextScreen = _screens[screenName];
+        
+        if (transitionDirection != ScreenTransitionDirection.None)
         {
-            _panels = panels;
-            _currentPanelType = initialPanelType;
+            var animationController = new ScreenAnimationController(currentScreen, nextScreen, transitionDirection);
+            animationController.PlayAnimation();
         }
-
-        public void ShowScreen(PanelType panelType, PanelTransitionDirection transitionDirection = PanelTransitionDirection.None)
+        else
         {
-            if (!_panels.ContainsKey(panelType))
-            {
-                Debug.LogError($"Panel type {panelType} not found in panels.");
-                return;
-            }
-
-            AbstractPanelMono currentPanel = _panels[_currentPanelType];
-            AbstractPanelMono nextPanel = _panels[panelType];
-
-            if (transitionDirection != PanelTransitionDirection.None)
-            {
-                var animationController = new ScreenAnimationController(currentPanel, nextPanel, transitionDirection);
-                animationController.PlayAnimation();
-            }
-            else
-            {
-                currentPanel.gameObject.SetActive(false);
-                nextPanel.gameObject.SetActive(true);
-            }
-
-            _currentPanelType = panelType;
+            currentScreen.gameObject.SetActive(false);
+            nextScreen.gameObject.SetActive(true);
         }
+        
+        _currentScreenName = nextScreen.ScreenName;
+
+        return nextScreen;
     }
 }

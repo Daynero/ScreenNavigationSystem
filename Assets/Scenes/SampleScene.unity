@@ -305,8 +305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allScreensContainer: {fileID: 1753714810}
-  panelDatabase: {fileID: 11400000, guid: 61930ab6121dc4c79a0dc59241386151, type: 2}
-  defaultPanelType: 0
+  screenDatabase: {fileID: 11400000, guid: 61930ab6121dc4c79a0dc59241386151, type: 2}
+  defaultScreenName: 0
 --- !u!4 &725869409
 Transform:
   m_ObjectHideFlags: 0
