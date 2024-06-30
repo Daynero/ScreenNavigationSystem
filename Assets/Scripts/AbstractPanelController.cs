@@ -1,4 +1,5 @@
 using System;
+using PanelsNavigationModule;
 
 public class AbstractPanelController : IDisposable
 {
@@ -13,8 +14,5 @@ public class AbstractPanelController : IDisposable
 
     public virtual void Dispose()
     {
-        // Очистка ресурсів, якщо потрібно
     }
-
-    // Можна додати додаткові методи для управління панеллю, якщо потрібно
 }

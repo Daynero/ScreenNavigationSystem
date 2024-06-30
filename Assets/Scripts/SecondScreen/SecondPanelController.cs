@@ -1,24 +1,23 @@
 using DefaultNamespace;
+using PanelsNavigationModule;
+using PanelsNavigationModule.Animations;
 
 public class SecondPanelController : AbstractPanelController
 {
-    private Second _firstPanel;
-    private readonly ScreenNavigationSystem _navigationSystem;
+    private readonly Second _firstPanel;
 
     public SecondPanelController(Second panelMono, ScreenNavigationSystem navigationSystem) 
         : base(panelMono, navigationSystem)
     {
         _firstPanel = panelMono;
-        _navigationSystem = navigationSystem;
         _firstPanel.Button.onClick.AddListener(HandleButtonClick);
     }
 
-    public void HandleButtonClick()
+    private void HandleButtonClick()
     {
-        _navigationSystem.ShowScreen(PanelType.First);
+        NavigationSystem.ShowScreen(PanelType.First, PanelTransitionDirection.LeftToRight);
     }
 
-    // Пам'ятайте очистити слухачі, коли контролер не потрібен
     public override void Dispose()
     {
         _firstPanel.Button.onClick.RemoveListener(HandleButtonClick);

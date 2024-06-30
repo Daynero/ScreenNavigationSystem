@@ -11,7 +11,8 @@ public class CompositionRoot : MonoBehaviour
     [SerializeField] private PanelDatabase panelDatabase;
     [SerializeField] private PanelType defaultPanelType;
 
-    private Dictionary<PanelType, AbstractPanelController> _controllers = new();
+    private Dictionary<PanelType, AbstractPanelMono> _panels = new Dictionary<PanelType, AbstractPanelMono>();
+    private Dictionary<AbstractPanelMono, AbstractPanelController> _controllers = new Dictionary<AbstractPanelMono, AbstractPanelController>();
     private ScreenNavigationSystem _screenNavigationSystem;
 
     private void Awake()
@@ -21,16 +22,15 @@ public class CompositionRoot : MonoBehaviour
 
     private void Initialize()
     {
-        _screenNavigationSystem = new ScreenNavigationSystem(ShowScreen);
-
-        // Створюємо контролери для всіх екранів
+        _screenNavigationSystem = new ScreenNavigationSystem(_panels, defaultPanelType);
+        
         foreach (PanelType panelType in Enum.GetValues(typeof(PanelType)))
         {
             var panelPrefab = panelDatabase[panelType];
             if (panelPrefab != null)
             {
                 var panelInstance = Instantiate(panelPrefab, allScreensContainer);
-                panelInstance.gameObject.SetActive(false); // Робимо панелі неактивними на старті
+                panelInstance.gameObject.SetActive(false);
 
                 AbstractPanelController controller;
                 switch (panelType)
@@ -45,21 +45,12 @@ public class CompositionRoot : MonoBehaviour
                         controller = new AbstractPanelController(panelInstance, _screenNavigationSystem);
                         break;
                 }
-                _controllers.Add(panelType, controller);
+
+                _panels.Add(panelType, panelInstance);
+                _controllers.Add(panelInstance, controller);
             }
         }
 
-        _screenNavigationSystem.Initialize(_controllers);
-
-        // Активуємо дефолтний екран
-        ShowScreen(defaultPanelType);
-    }
-
-    private void ShowScreen(PanelType panelType)
-    {
-        foreach (var controller in _controllers.Values)
-        {
-            controller.PanelMono.gameObject.SetActive(controller.PanelMono.PanelType == panelType);
-        }
+        _screenNavigationSystem.ShowScreen(defaultPanelType);
     }
 }
