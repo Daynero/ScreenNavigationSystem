@@ -28,6 +28,7 @@ namespace SecondScreen
 
         private void HandleButtonClick()
         {
+            _registrationStateManager.ClearData();
             ScreenNavigationSystem.Show(ScreenName.First, ScreenTransitionDirection.LeftToRight);
         }
 

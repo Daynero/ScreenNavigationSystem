@@ -9,6 +9,8 @@ namespace Animations
         private readonly AbstractScreenView _openingScreen;
         private readonly ScreenTransitionDirection _direction;
 
+        private const float AnimationDuration = 0.2f; 
+
         public ScreenAnimationController(AbstractScreenView closingScreen, AbstractScreenView openingScreen, ScreenTransitionDirection direction)
         {
             _closingScreen = closingScreen;
@@ -28,13 +30,12 @@ namespace Animations
 
             _openingScreen.transform.position = startPos;
             _openingScreen.gameObject.SetActive(true);
-
-            float duration = 0.2f;
+            
             float startTime = Time.time;
 
-            while (Time.time < startTime + duration)
+            while (Time.time < startTime + AnimationDuration)
             {
-                float t = (Time.time - startTime) / duration;
+                float t = (Time.time - startTime) / AnimationDuration;
                 AnimatePanels(startPos, endPos, closingStartPos, closingEndPos, t);
                 yield return null;
             }

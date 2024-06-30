@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using FirstScreen;
-using SecondScreen;
 using UnityEngine;
 
 public class CompositionRoot : MonoBehaviour
 {
-    [Header("Root Objects")] [SerializeField]
-    private Transform allScreensContainer;
-
+    [Header("Root Objects")] 
+    [SerializeField] private Transform allScreensContainer;
     [SerializeField] private ScreenDatabase screenDatabase;
     [SerializeField] private ScreenName defaultScreenName;
 
@@ -16,6 +13,7 @@ public class CompositionRoot : MonoBehaviour
     private readonly Dictionary<AbstractScreenView, AbstractScreenController> _controllers = new();
     private ScreenNavigationSystem _screenNavigationSystem;
     private RegistrationStateManager _registrationStateManager;
+    private ScreenControllerFactory _screenControllerFactory;
 
     private void Awake()
     {
@@ -25,8 +23,16 @@ public class CompositionRoot : MonoBehaviour
     private void Initialize()
     {
         _screenNavigationSystem = new ScreenNavigationSystem(_screens, defaultScreenName);
-        _registrationStateManager = new RegistrationStateManager(_screenNavigationSystem);
+        _registrationStateManager = new RegistrationStateManager(_screenNavigationSystem, defaultScreenName);
+        _screenControllerFactory = new ScreenControllerFactory();
 
+        SetupScreensAndControllers();
+        _screenNavigationSystem.InitControllers(_controllers);
+        _registrationStateManager.LoadData();
+    }
+
+    private void SetupScreensAndControllers()
+    {
         foreach (ScreenName screenName in Enum.GetValues(typeof(ScreenName)))
         {
             var screenView = screenDatabase[screenName];
@@ -35,28 +41,12 @@ public class CompositionRoot : MonoBehaviour
                 var screenViewInstance = Instantiate(screenView, allScreensContainer);
                 screenViewInstance.gameObject.SetActive(false);
 
-                AbstractScreenController controller;
-                switch (screenName)
-                {
-                    case ScreenName.First:
-                        controller = new FirstScreenController(screenViewInstance as FirstScreenView,
-                            _screenNavigationSystem);
-                        break;
-                    case ScreenName.Second:
-                        controller = new SecondScreenController(screenViewInstance as SecondScreenView,
-                            _screenNavigationSystem, _registrationStateManager);
-                        break;
-                    default:
-                        controller = new AbstractScreenController(screenViewInstance, _screenNavigationSystem);
-                        break;
-                }
+                AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance,
+                    _screenNavigationSystem, _registrationStateManager);
 
                 _screens.Add(screenName, screenViewInstance);
                 _controllers.Add(screenViewInstance, controller);
             }
         }
-
-        _screenNavigationSystem.InitControllers(_controllers);
-        _registrationStateManager.LoadData();
     }
 }

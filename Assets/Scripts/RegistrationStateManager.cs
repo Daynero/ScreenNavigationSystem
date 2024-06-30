@@ -6,10 +6,12 @@ public class RegistrationStateManager
 {
     private const string ScreenToLoadKey = "ScreenToLoad";
     private readonly ScreenNavigationSystem _screenNavigationSystem;
+    private readonly ScreenName _defaultScreenName;
 
-    public RegistrationStateManager(ScreenNavigationSystem screenNavigationSystem)
+    public RegistrationStateManager(ScreenNavigationSystem screenNavigationSystem, ScreenName defaultScreenName)
     {
         _screenNavigationSystem = screenNavigationSystem;
+        _defaultScreenName = defaultScreenName;
     }
 
     public void SaveData<T>(ScreenName screenName, T data)
@@ -22,7 +24,7 @@ public class RegistrationStateManager
 
     public void LoadData()
     {
-        string savedScreenName = PlayerPrefs.GetString(ScreenToLoadKey, ScreenName.First.ToString());
+        string savedScreenName = PlayerPrefs.GetString(ScreenToLoadKey, _defaultScreenName.ToString());
         if (!string.IsNullOrEmpty(savedScreenName) && Enum.TryParse(savedScreenName, out ScreenName screenName))
         {
             string json = PlayerPrefs.GetString(screenName.ToString(), string.Empty);
