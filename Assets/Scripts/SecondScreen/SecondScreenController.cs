@@ -6,11 +6,14 @@ namespace SecondScreen
     public class SecondScreenController : AbstractScreenController
     {
         private readonly SecondScreenView _view;
+        private readonly RegistrationStateManager _registrationStateManager;
 
-        public SecondScreenController(SecondScreenView view, ScreenNavigationSystem navigationSystem) 
+        public SecondScreenController(SecondScreenView view, ScreenNavigationSystem navigationSystem,
+            RegistrationStateManager registrationStateManager)
             : base(view, navigationSystem)
         {
             _view = view;
+            _registrationStateManager = registrationStateManager;
             _view.Button.onClick.AddListener(HandleButtonClick);
 
             OnShow += HandleData;
@@ -20,6 +23,7 @@ namespace SecondScreen
         {
             FirstScreenVM vm = data as FirstScreenVM;
             _view.Text.text = vm.InputString;
+            _registrationStateManager.SaveData(ScreenName.Second, vm);
         }
 
         private void HandleButtonClick()

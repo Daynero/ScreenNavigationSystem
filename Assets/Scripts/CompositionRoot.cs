@@ -6,14 +6,16 @@ using UnityEngine;
 
 public class CompositionRoot : MonoBehaviour
 {
-    [Header("Root Objects")]
-    [SerializeField] private Transform allScreensContainer;
+    [Header("Root Objects")] [SerializeField]
+    private Transform allScreensContainer;
+
     [SerializeField] private ScreenDatabase screenDatabase;
     [SerializeField] private ScreenName defaultScreenName;
 
     private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
     private readonly Dictionary<AbstractScreenView, AbstractScreenController> _controllers = new();
     private ScreenNavigationSystem _screenNavigationSystem;
+    private RegistrationStateManager _registrationStateManager;
 
     private void Awake()
     {
@@ -23,7 +25,8 @@ public class CompositionRoot : MonoBehaviour
     private void Initialize()
     {
         _screenNavigationSystem = new ScreenNavigationSystem(_screens, defaultScreenName);
-        
+        _registrationStateManager = new RegistrationStateManager(_screenNavigationSystem);
+
         foreach (ScreenName screenName in Enum.GetValues(typeof(ScreenName)))
         {
             var screenView = screenDatabase[screenName];
@@ -36,10 +39,12 @@ public class CompositionRoot : MonoBehaviour
                 switch (screenName)
                 {
                     case ScreenName.First:
-                        controller = new FirstScreenController(screenViewInstance as FirstScreenView, _screenNavigationSystem);
+                        controller = new FirstScreenController(screenViewInstance as FirstScreenView,
+                            _screenNavigationSystem);
                         break;
                     case ScreenName.Second:
-                        controller = new SecondScreenController(screenViewInstance as SecondScreenView, _screenNavigationSystem);
+                        controller = new SecondScreenController(screenViewInstance as SecondScreenView,
+                            _screenNavigationSystem, _registrationStateManager);
                         break;
                     default:
                         controller = new AbstractScreenController(screenViewInstance, _screenNavigationSystem);
@@ -52,6 +57,6 @@ public class CompositionRoot : MonoBehaviour
         }
 
         _screenNavigationSystem.InitControllers(_controllers);
-        _screenNavigationSystem.Show(defaultScreenName);
+        _registrationStateManager.LoadData();
     }
 }
