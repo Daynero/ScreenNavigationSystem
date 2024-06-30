@@ -20,7 +20,7 @@ namespace FirstScreen
                 InputString = _view.InputField.text
             };
 
-            ScreenNavigationSystem.ShowScreenWithData(ScreenName.Second, firstScreenVm,
+            ScreenNavigationSystem.ShowWithData(ScreenName.Second, firstScreenVm,
                 ScreenTransitionDirection.RightToLeft);
         }
 

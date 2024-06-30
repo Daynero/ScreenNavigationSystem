@@ -17,7 +17,7 @@ public class ScreenNavigationSystem
     public void InitControllers(Dictionary<AbstractScreenView, AbstractScreenController> controllers) =>
         _controllers = controllers;
 
-    public void ShowScreen(ScreenName screenName,
+    public void Show(ScreenName screenName,
         ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
     {
         if (!IsScreenAvailable(screenName)) 
@@ -26,7 +26,7 @@ public class ScreenNavigationSystem
         SwitchScreen(screenName, transitionDirection);
     }
 
-    public void ShowScreenWithData(ScreenName screenName, object data,
+    public void ShowWithData(ScreenName screenName, object data,
         ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
     {
         if (!IsScreenAvailable(screenName)) 

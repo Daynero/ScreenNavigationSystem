@@ -52,6 +52,6 @@ public class CompositionRoot : MonoBehaviour
         }
 
         _screenNavigationSystem.InitControllers(_controllers);
-        _screenNavigationSystem.ShowScreen(defaultScreenName);
+        _screenNavigationSystem.Show(defaultScreenName);
     }
 }

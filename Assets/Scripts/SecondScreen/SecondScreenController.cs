@@ -24,7 +24,7 @@ namespace SecondScreen
 
         private void HandleButtonClick()
         {
-            ScreenNavigationSystem.ShowScreen(ScreenName.First, ScreenTransitionDirection.LeftToRight);
+            ScreenNavigationSystem.Show(ScreenName.First, ScreenTransitionDirection.LeftToRight);
         }
 
         public override void Dispose()
