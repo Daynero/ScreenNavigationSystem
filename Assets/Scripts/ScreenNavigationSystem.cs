@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ScreenNavigationSystem
 {
-    private Dictionary<ScreenName, AbstractScreenView> _screens;
+    private readonly Dictionary<ScreenName, AbstractScreenView> _screens;
     private Dictionary<AbstractScreenView, AbstractScreenController> _controllers;
     private ScreenName _currentScreenName;
 
@@ -37,16 +37,6 @@ public class ScreenNavigationSystem
         var nextScreen = SwitchScreen(screenName, transitionDirection);
         _controllers[nextScreen].ShowWithData<BaseVm>(data);
     }
-    
-    public void ShowWithData<T>(ScreenName screenName, object data,
-        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None) where T:BaseVm
-    {
-        if (!IsScreenAvailable(screenName)) 
-            return;
-        
-        var nextScreen = SwitchScreen(screenName, transitionDirection);
-        _controllers[nextScreen].ShowWithData<BaseVm>(data as T);
-    }
 
     private bool IsScreenAvailable(ScreenName screenName)
     {
@@ -54,7 +44,6 @@ public class ScreenNavigationSystem
         
         Debug.LogError($"Screen name {screenName} not found in screens.");
         return false;
-
     }
 
     private AbstractScreenView SwitchScreen(ScreenName screenName, ScreenTransitionDirection transitionDirection)
@@ -69,8 +58,8 @@ public class ScreenNavigationSystem
         }
         else
         {
-            currentScreen.gameObject.SetActive(false);
-            nextScreen.gameObject.SetActive(true);
+            _controllers[currentScreen].Hide();
+            _controllers[nextScreen].Show();
         }
         
         _currentScreenName = nextScreen.ScreenName;

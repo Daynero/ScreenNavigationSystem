@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075cd11a0f224d6a920f21090b7851ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ScreenConfiguration>k__BackingField: {fileID: 11400000, guid: 59828b1c4d64d41fb93c23a55d65f028, type: 2}
   <Button>k__BackingField: {fileID: 2708050801282676658}
   <InputField>k__BackingField: {fileID: 5491227090806807926}
 --- !u!225 &9021825742756046569

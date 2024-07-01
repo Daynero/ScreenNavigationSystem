@@ -306,7 +306,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allScreensContainer: {fileID: 1753714810}
   screenDatabase: {fileID: 11400000, guid: 61930ab6121dc4c79a0dc59241386151, type: 2}
-  defaultScreenName: 0
+  defaultScreenName: 1
+  headerViewPrefab: {fileID: 8020730247110873295, guid: d2bc213b054114ea58ced0a2f8912133, type: 3}
+  footerViewPrefab: {fileID: 7838738131710149386, guid: 7089b099957c94b2eaadc52a08122447, type: 3}
 --- !u!4 &725869409
 Transform:
   m_ObjectHideFlags: 0

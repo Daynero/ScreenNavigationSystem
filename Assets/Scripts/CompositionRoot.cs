@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Data;
 using FirstScreen;
 using ScreensRoot;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class CompositionRoot : MonoBehaviour
     [SerializeField] private Transform allScreensContainer;
     [SerializeField] private ScreenDatabase screenDatabase;
     [SerializeField] private ScreenName defaultScreenName;
+
+    [Header("Header/Footer Prefabs")]
+    [SerializeField] private HeaderView headerViewPrefab;
+    [SerializeField] private FooterView footerViewPrefab;
 
     private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
     private readonly Dictionary<AbstractScreenView, AbstractScreenController> _controllers = new();
@@ -41,10 +46,10 @@ public class CompositionRoot : MonoBehaviour
             if (screenView != null)
             {
                 var screenViewInstance = Instantiate(screenView, allScreensContainer);
+                screenViewInstance.Initialize(headerViewPrefab, footerViewPrefab, screenViewInstance.transform);
                 screenViewInstance.gameObject.SetActive(false);
 
-                AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance,
-                    _screenNavigationSystem, _registrationStateManager);
+                AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance, _screenNavigationSystem, _registrationStateManager);
 
                 _screens.Add(screenName, screenViewInstance);
                 _controllers.Add(screenViewInstance, controller);

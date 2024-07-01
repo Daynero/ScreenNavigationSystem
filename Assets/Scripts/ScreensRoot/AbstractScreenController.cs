@@ -1,4 +1,5 @@
 using System;
+using Animations;
 using FirstScreen;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace ScreensRoot
         {
             ScreenView = screenView;
             ScreenNavigationSystem = screenNavigationSystem;
+
+            InitializeHeaderAndFooter();
         }
 
         public void Show()
@@ -22,8 +25,34 @@ namespace ScreensRoot
 
         public void ShowWithData<T>(T data) where T : BaseVm
         {
-            ScreenView.gameObject.SetActive(true);
+            Show();
             HandleData(data);
+        }
+
+        private void InitializeHeaderAndFooter()
+        {
+            ConfigureHeader();
+            ConfigureFooter();
+        }
+
+        private void ConfigureHeader()
+        {
+            ScreenView.HeaderView.gameObject.SetActive(ScreenView.ScreenConfiguration.showHeader);
+            if (ScreenView.ScreenConfiguration.showHeader)
+            {
+                ScreenView.HeaderView.SetView(ScreenView.ScreenConfiguration);
+                ScreenView.HeaderView.OnBackClick += HandleBackClick;
+            }
+        }
+        
+        private void HandleBackClick(ScreenName screenName)
+        {
+            ScreenNavigationSystem.Show(screenName, ScreenTransitionDirection.LeftToRight);
+        }
+
+        private void ConfigureFooter()
+        {
+            ScreenView.FooterView.gameObject.SetActive(ScreenView.ScreenConfiguration.showFooter);
         }
 
         protected virtual void HandleData<T>(T data) where T : BaseVm
