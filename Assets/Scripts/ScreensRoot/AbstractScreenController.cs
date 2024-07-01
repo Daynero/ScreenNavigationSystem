@@ -1,5 +1,6 @@
 using System;
 using Animations;
+using Data;
 using FirstScreen;
 using UnityEngine;
 
@@ -31,28 +32,9 @@ namespace ScreensRoot
 
         private void InitializeHeaderAndFooter()
         {
-            ConfigureHeader();
-            ConfigureFooter();
-        }
-
-        private void ConfigureHeader()
-        {
-            ScreenView.HeaderView.gameObject.SetActive(ScreenView.ScreenConfiguration.showHeader);
-            if (ScreenView.ScreenConfiguration.showHeader)
-            {
-                ScreenView.HeaderView.SetView(ScreenView.ScreenConfiguration);
-                ScreenView.HeaderView.OnBackClick += HandleBackClick;
-            }
-        }
-        
-        private void HandleBackClick(ScreenName screenName)
-        {
-            ScreenNavigationSystem.Show(screenName, ScreenTransitionDirection.LeftToRight);
-        }
-
-        private void ConfigureFooter()
-        {
-            ScreenView.FooterView.gameObject.SetActive(ScreenView.ScreenConfiguration.showFooter);
+            var headerFooterManager = new HeaderFooterManager(ScreenView.ScreenConfiguration);
+            headerFooterManager.ApplyHeaderSettings(ScreenView, ScreenNavigationSystem);
+            headerFooterManager.ApplyFooterSettings(ScreenView);
         }
 
         protected virtual void HandleData<T>(T data) where T : BaseVm

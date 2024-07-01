@@ -8,17 +8,14 @@ namespace ScreensRoot
 {
     public class HeaderView : MonoBehaviour
     {
-        [SerializeField] private Button backButton;
-        [SerializeField] private TMP_Text title;
+        [field:SerializeField] public Button BackButton { get; private set; }
+        [field:SerializeField] public TMP_Text Title { get; private set; }
 
-        public event Action<ScreenName> OnBackClick;
+        public event Action OnBackClick;
 
-        public void SetView(ScreenConfiguration screenConfiguration)
+        private void Awake()
         {
-            if (screenConfiguration.backToScreen != ScreenName.None)
-                backButton.onClick.AddListener(() => OnBackClick?.Invoke(screenConfiguration.backToScreen));
-            
-            title.text = screenConfiguration.headerTitle;
+            BackButton.onClick.AddListener(() => OnBackClick?.Invoke());
         }
     }
 }

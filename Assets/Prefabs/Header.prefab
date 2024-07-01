@@ -347,5 +347,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6038b1065ade4093ba5384483b87c806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backButton: {fileID: 6390080563061617246}
-  title: {fileID: 4945740034625713625}
+  <BackButton>k__BackingField: {fileID: 6390080563061617246}
+  <Title>k__BackingField: {fileID: 4945740034625713625}
