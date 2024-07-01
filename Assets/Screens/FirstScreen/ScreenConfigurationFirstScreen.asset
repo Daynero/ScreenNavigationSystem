@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headerSettings:
   - {fileID: 11400000, guid: f2effbc3a1cd94f8c99afd0e4bfa6d70, type: 2}
-  - {fileID: 11400000, guid: 68b6d4b4e1a5b4950867512edb60084a, type: 2}
   footerSettings: []

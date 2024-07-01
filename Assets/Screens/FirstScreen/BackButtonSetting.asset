@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: f9a721d2c9974947bc8c79018e6a3f59, type: 3}
   m_Name: BackButtonSetting
   m_EditorClassIdentifier: Assembly-CSharp:Data:BackButtonSetting
   backToScreen: 1

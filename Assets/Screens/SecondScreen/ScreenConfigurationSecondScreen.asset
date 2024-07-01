@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ScreenConfigurationSecondScreen
   m_EditorClassIdentifier: 
   headerSettings:
-  - {fileID: 11400000, guid: 68b6d4b4e1a5b4950867512edb60084a, type: 2}
   - {fileID: 11400000, guid: 225240a8bab3f4db38f280ed4c10ca12, type: 2}
+  - {fileID: 11400000, guid: 538ad5be524134eae83263d426a49b09, type: 2}
   footerSettings: []
