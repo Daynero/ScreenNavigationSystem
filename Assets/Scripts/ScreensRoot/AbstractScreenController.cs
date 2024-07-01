@@ -32,7 +32,7 @@ namespace ScreensRoot
 
         private void InitializeHeaderAndFooter()
         {
-            var headerFooterManager = new HeaderFooterManager(ScreenView.ScreenConfiguration);
+            var headerFooterManager = new HeaderFooterController(ScreenView.ScreenConfiguration);
             headerFooterManager.ApplyHeaderSettings(ScreenView, ScreenNavigationSystem);
             headerFooterManager.ApplyFooterSettings(ScreenView);
         }

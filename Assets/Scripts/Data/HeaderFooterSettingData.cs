@@ -8,6 +8,7 @@ namespace Data
     public class BackButtonSetting : HeaderFooterSetting
     {
         public ScreenName backToScreen;
+        public ScreenTransitionDirection transition;
 
         public override void ApplySetting(AbstractScreenView screenView, ScreenNavigationSystem navigationSystem)
         {
@@ -17,7 +18,7 @@ namespace Data
                 screenView.HeaderView.BackButton.onClick.RemoveAllListeners();
                 screenView.HeaderView.BackButton.onClick.AddListener(() =>
                 {
-                    navigationSystem.Show(backToScreen, ScreenTransitionDirection.LeftToRight);
+                    navigationSystem.Show(backToScreen, transition);
                 });
             }
         }

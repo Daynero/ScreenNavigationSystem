@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: TitleSetting
-  m_EditorClassIdentifier: Assembly-CSharp::TitleSetting
-  titleText: WOOOOW
+  m_Name: BackButtonSetting
+  m_EditorClassIdentifier: Assembly-CSharp:Data:BackButtonSetting
+  backToScreen: 1
+  transition: 0

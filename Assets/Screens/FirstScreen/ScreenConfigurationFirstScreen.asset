@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3827c89d6df14395bdd81a637b98cbca, type: 3}
-  m_Name: ScreenConfigurationSecondScreen
+  m_Name: ScreenConfigurationFirstScreen
   m_EditorClassIdentifier: 
   headerSettings:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f2effbc3a1cd94f8c99afd0e4bfa6d70, type: 2}
   - {fileID: 11400000, guid: 68b6d4b4e1a5b4950867512edb60084a, type: 2}
   footerSettings: []
