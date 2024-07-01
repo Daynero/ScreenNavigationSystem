@@ -1,36 +1,67 @@
 using System;
+using FirstScreen;
+using UnityEngine;
 
-public class AbstractScreenController : IDisposable
+namespace ScreensRoot
 {
-    public AbstractScreenView ScreenViewView { get; private set; }
-    protected ScreenNavigationSystem ScreenNavigationSystem { get; private set; }
-
-    public event Action<object> OnShow;
-
-    public AbstractScreenController(AbstractScreenView screenViewView, ScreenNavigationSystem screenNavigationSystem)
+    public abstract class AbstractScreenController : IDisposable
     {
-        ScreenViewView = screenViewView;
-        ScreenNavigationSystem = screenNavigationSystem;
+        private AbstractScreenView ScreenView { get; set; }
+        protected ScreenNavigationSystem ScreenNavigationSystem { get; private set; }
+
+        protected AbstractScreenController(AbstractScreenView screenView, ScreenNavigationSystem screenNavigationSystem)
+        {
+            ScreenView = screenView;
+            ScreenNavigationSystem = screenNavigationSystem;
+        }
+
+        public void Show()
+        {
+            ScreenView.gameObject.SetActive(true);
+        }
+
+        public void ShowWithData<T>(T data) where T : BaseVm
+        {
+            ScreenView.gameObject.SetActive(true);
+            HandleData(data);
+        }
+
+        protected virtual void HandleData<T>(T data) where T : BaseVm
+        {
+            
+        }
+
+        public void Hide()
+        {
+            ScreenView.gameObject.SetActive(false);
+        }
+
+        public virtual void Dispose()
+        {
+        
+        }
     }
 
-    public void Show()
-    {
-        ScreenViewView.gameObject.SetActive(true);
-        OnShow?.Invoke(null);
-    }
 
-    public void ShowWithData(object data)
+    public abstract class AbstractScreenController<T> : AbstractScreenController where T : BaseVm
     {
-        ScreenViewView.gameObject.SetActive(true);
-        OnShow?.Invoke(data);
-    }
+        protected AbstractScreenController(AbstractScreenView screenView, ScreenNavigationSystem screenNavigationSystem)
+            : base(screenView, screenNavigationSystem)
+        {
+        }
 
-    public void Hide()
-    {
-        ScreenViewView.gameObject.SetActive(false);
-    }
+        protected override void HandleData<TData>(TData data)
+        {
+            if (data is T typedData)
+            {
+                HandleTypedData(typedData);
+            }
+            else
+            {
+                Debug.LogError($"Неправильний тип даних: {typeof(TData).FullName}, очікується: {typeof(T).FullName}");
+            }
+        }
 
-    public virtual void Dispose()
-    {
+        protected abstract void HandleTypedData(T data);
     }
 }

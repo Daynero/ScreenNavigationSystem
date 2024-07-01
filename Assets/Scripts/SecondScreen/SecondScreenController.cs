@@ -1,9 +1,11 @@
 using Animations;
 using FirstScreen;
+using ScreensRoot;
+using UnityEngine;
 
 namespace SecondScreen
 {
-    public class SecondScreenController : AbstractScreenController
+    public class SecondScreenController : AbstractScreenController<FirstScreenVM>
     {
         private readonly SecondScreenView _view;
         private readonly RegistrationStateManager _registrationStateManager;
@@ -15,15 +17,12 @@ namespace SecondScreen
             _view = view;
             _registrationStateManager = registrationStateManager;
             _view.Button.onClick.AddListener(HandleButtonClick);
-
-            OnShow += HandleData;
         }
 
-        private void HandleData(object data)
+        protected override void HandleTypedData(FirstScreenVM data)
         {
-            FirstScreenVM vm = data as FirstScreenVM;
-            _view.Text.text = vm.InputString;
-            _registrationStateManager.SaveData(ScreenName.Second, vm);
+            _view.Text.text = data.InputString;
+            _registrationStateManager.SaveData(ScreenName.Second, data);
         }
 
         private void HandleButtonClick()

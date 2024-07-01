@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Animations;
+using FirstScreen;
+using ScreensRoot;
 using UnityEngine;
 
 public class ScreenNavigationSystem
@@ -26,14 +28,24 @@ public class ScreenNavigationSystem
         SwitchScreen(screenName, transitionDirection);
     }
 
-    public void ShowWithData(ScreenName screenName, object data,
-        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
+    public void ShowWithData<T>(ScreenName screenName, T data,
+        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None) where T:BaseVm
     {
         if (!IsScreenAvailable(screenName)) 
             return;
         
         var nextScreen = SwitchScreen(screenName, transitionDirection);
-        _controllers[nextScreen].ShowWithData(data);
+        _controllers[nextScreen].ShowWithData<BaseVm>(data);
+    }
+    
+    public void ShowWithData<T>(ScreenName screenName, object data,
+        ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None) where T:BaseVm
+    {
+        if (!IsScreenAvailable(screenName)) 
+            return;
+        
+        var nextScreen = SwitchScreen(screenName, transitionDirection);
+        _controllers[nextScreen].ShowWithData<BaseVm>(data as T);
     }
 
     private bool IsScreenAvailable(ScreenName screenName)

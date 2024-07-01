@@ -1,9 +1,11 @@
 using FirstScreen;
+using ScreensRoot;
 using SecondScreen;
 
 public class ScreenControllerFactory
 {
-    public AbstractScreenController CreateController(AbstractScreenView screenView, ScreenNavigationSystem navigationSystem, RegistrationStateManager registrationStateManager = null)
+    public AbstractScreenController CreateController(AbstractScreenView screenView,
+        ScreenNavigationSystem navigationSystem, RegistrationStateManager registrationStateManager = null)
     {
         switch (screenView)
         {
@@ -12,7 +14,15 @@ public class ScreenControllerFactory
             case SecondScreenView secondScreenView:
                 return new SecondScreenController(secondScreenView, navigationSystem, registrationStateManager);
             default:
-                return new AbstractScreenController(screenView, navigationSystem);
+                return new GenericScreenController(screenView, navigationSystem);
         }
+    }
+}
+
+public class GenericScreenController : AbstractScreenController
+{
+    public GenericScreenController(AbstractScreenView screenView, ScreenNavigationSystem screenNavigationSystem)
+        : base(screenView, screenNavigationSystem)
+    {
     }
 }

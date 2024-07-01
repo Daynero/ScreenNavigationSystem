@@ -1,4 +1,5 @@
 using System;
+using FirstScreen;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -35,12 +36,13 @@ public class RegistrationStateManager
                 {
                     Type dataType = Type.GetType(typedData.Type);
                     object data = JsonConvert.DeserializeObject(typedData.Data.ToString(), dataType);
-                    _screenNavigationSystem.ShowWithData(screenName, data);
+                    BaseVm baseVm = data as BaseVm;
+                    _screenNavigationSystem.ShowWithData(screenName, baseVm);
                 }
             }
             else
             {
-                _screenNavigationSystem.Show(ScreenName.First);
+                _screenNavigationSystem.Show(_defaultScreenName);
             }
         }
     }
