@@ -1,4 +1,4 @@
-using Data;
+using System;
 using UnityEngine;
 
 namespace ScreensRoot
@@ -6,16 +6,13 @@ namespace ScreensRoot
     [RequireComponent(typeof(CanvasGroup))] 
     public abstract class AbstractScreenView : MonoBehaviour
     {
-        [field: SerializeField] public ScreenConfiguration ScreenConfiguration { get; private set; }
-        public HeaderView HeaderView { get; private set; }
-        public FooterView FooterView { get; private set; }
         public abstract ScreenName ScreenName { get; }
+        public event Action ScreenEnabled;
+        public event Action ScreenDisable;
 
-        public void Initialize(HeaderView headerViewPrefab, FooterView footerViewPrefab, Transform parent)
-        {
-            HeaderView = Instantiate(headerViewPrefab, parent);
-            FooterView = Instantiate(footerViewPrefab, parent);
-        }
+        private void OnEnable() => ScreenEnabled?.Invoke();
+        private void OnDisable() => ScreenDisable?.Invoke();
+
 
         private CanvasGroup _canvasGroup;
 

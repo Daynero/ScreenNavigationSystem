@@ -1,6 +1,6 @@
 using System;
-using FirstScreen;
 using Newtonsoft.Json;
+using ScreensRoot;
 using UnityEngine;
 
 public class RegistrationStateManager

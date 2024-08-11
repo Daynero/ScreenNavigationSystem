@@ -12,10 +12,6 @@ public class CompositionRoot : MonoBehaviour
     [SerializeField] private ScreenDatabase screenDatabase;
     [SerializeField] private ScreenName defaultScreenName;
 
-    [Header("Header/Footer Prefabs")]
-    [SerializeField] private HeaderView headerViewPrefab;
-    [SerializeField] private FooterView footerViewPrefab;
-
     private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
     private readonly Dictionary<AbstractScreenView, AbstractScreenController> _controllers = new();
     private ScreenNavigationSystem _screenNavigationSystem;
@@ -33,27 +29,25 @@ public class CompositionRoot : MonoBehaviour
         _registrationStateManager = new RegistrationStateManager(_screenNavigationSystem, defaultScreenName);
         _screenControllerFactory = new ScreenControllerFactory();
 
-        SetupScreensAndControllers();
+        CreateScreen(defaultScreenName);
         _screenNavigationSystem.InitControllers(_controllers);
+        _screenNavigationSystem.OnScreenMissing += CreateScreen;
         _registrationStateManager.LoadData();
     }
 
-    private void SetupScreensAndControllers()
+    private void CreateScreen(ScreenName screenName)
     {
-        foreach (ScreenName screenName in Enum.GetValues(typeof(ScreenName)))
+        var screenView = screenDatabase[screenName];
+        if (screenView != null)
         {
-            var screenView = screenDatabase[screenName];
-            if (screenView != null)
-            {
-                var screenViewInstance = Instantiate(screenView, allScreensContainer);
-                screenViewInstance.Initialize(headerViewPrefab, footerViewPrefab, screenViewInstance.transform);
-                screenViewInstance.gameObject.SetActive(false);
+            var screenViewInstance = Instantiate(screenView, allScreensContainer);
+            screenViewInstance.gameObject.SetActive(false);
 
-                AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance, _screenNavigationSystem, _registrationStateManager);
+            AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance,
+                _screenNavigationSystem, _registrationStateManager);
 
-                _screens.Add(screenName, screenViewInstance);
-                _controllers.Add(screenViewInstance, controller);
-            }
+            _screens.Add(screenName, screenViewInstance);
+            _controllers.Add(screenViewInstance, controller);
         }
     }
 }
