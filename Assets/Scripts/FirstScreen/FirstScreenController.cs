@@ -7,8 +7,8 @@ namespace FirstScreen
     {
         private readonly FirstScreenView _view;
 
-        public FirstScreenController(FirstScreenView screenViewView, ScreenNavigationSystem navigationSystem)
-            : base(screenViewView, navigationSystem)
+        public FirstScreenController(FirstScreenView screenViewView, UINavigator uiNavigator)
+            : base(screenViewView, uiNavigator)
         {
             _view = screenViewView;
             _view.Button.onClick.AddListener(HandleButtonClick);
@@ -21,8 +21,7 @@ namespace FirstScreen
                 InputString = _view.InputField.text
             };
 
-            ScreenNavigationSystem.ShowWithData(ScreenName.Second, firstScreenVm,
-                ScreenTransitionDirection.RightToLeft);
+            UINavigator.Show(ScreenName.Second, ScreenTransitionType.RightToLeft).WithData(firstScreenVm);
         }
 
         public override void Dispose()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Animations;
-using FirstScreen;
 using ScreensRoot;
 using UnityEngine;
 
@@ -21,23 +20,23 @@ using UnityEngine;
         public void InitControllers(Dictionary<AbstractScreenView, AbstractScreenController> controllers) =>
             _controllers = controllers;
 
-        public void Show(ScreenName screenName,
-            ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None)
+        public AbstractScreenView Show(ScreenName screenName,
+            ScreenTransitionType transitionType = ScreenTransitionType.None)
         {
             if (screenName == ScreenName.None)
             {
                 CloseCurrentScreen();
-                return;
+                return null;
             }
 
             if (!IsScreenAvailable(screenName)) 
-                return;
-        
-            SwitchScreen(screenName, transitionDirection);
+                return null;
+
+            return SwitchScreen(screenName, transitionType);
         }
 
         public void ShowWithData<T>(ScreenName screenName, T data,
-            ScreenTransitionDirection transitionDirection = ScreenTransitionDirection.None) where T:BaseVm
+            ScreenTransitionType transitionType = ScreenTransitionType.None) where T:BaseVm
         {
             if (screenName == ScreenName.None)
             {
@@ -48,8 +47,30 @@ using UnityEngine;
             if (!IsScreenAvailable(screenName)) 
                 return;
         
-            var nextScreen = SwitchScreen(screenName, transitionDirection);
+            var nextScreen = SwitchScreen(screenName, transitionType);
             _controllers[nextScreen].ShowWithData<BaseVm>(data);
+        }
+        
+        public AbstractScreenView Show(ScreenName screenName)
+        {
+            if (screenName == ScreenName.None)
+            {
+                CloseCurrentScreen();
+                return null;
+            }
+
+            if (!IsScreenAvailable(screenName)) 
+                return null;
+
+            return SwitchScreen(screenName);
+        }
+
+        public void ShowWithData<T>(ScreenName screenName, T data) where T : BaseVm
+        {
+            if (_screens.TryGetValue(screenName, out var nextScreen))
+            {
+                _controllers[nextScreen].ShowWithData(data);
+            }
         }
 
         private void CloseCurrentScreen()
@@ -75,14 +96,14 @@ using UnityEngine;
             }
         }
 
-        private AbstractScreenView SwitchScreen(ScreenName screenName, ScreenTransitionDirection transitionDirection)
+        private AbstractScreenView SwitchScreen(ScreenName screenName, ScreenTransitionType transitionType)
         {
             AbstractScreenView currentScreen = _screens[_currentScreenName];
             AbstractScreenView nextScreen = _screens[screenName];
         
-            if (transitionDirection != ScreenTransitionDirection.None)
+            if (transitionType != ScreenTransitionType.None)
             {
-                var animationController = new ScreenAnimationController(currentScreen, nextScreen, transitionDirection);
+                var animationController = new ScreenAnimationController(currentScreen, nextScreen, transitionType);
                 animationController.PlayAnimation();
             }
             else
@@ -90,6 +111,19 @@ using UnityEngine;
                 _controllers[currentScreen].Hide();
                 _controllers[nextScreen].Show();
             }
+        
+            _currentScreenName = nextScreen.ScreenName;
+
+            return nextScreen;
+        }
+        
+        private AbstractScreenView SwitchScreen(ScreenName screenName)
+        {
+            AbstractScreenView currentScreen = _screens[_currentScreenName];
+            AbstractScreenView nextScreen = _screens[screenName];
+        
+            _controllers[currentScreen].Hide();
+            _controllers[nextScreen].Show();
         
             _currentScreenName = nextScreen.ScreenName;
 

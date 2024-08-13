@@ -1,6 +1,6 @@
 namespace Animations
 {
-    public enum ScreenTransitionDirection
+    public enum ScreenTransitionType
     {
         None,
         LeftToRight,

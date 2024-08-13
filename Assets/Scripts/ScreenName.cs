@@ -2,5 +2,6 @@ public enum ScreenName
 {
     None,
     First,
-    Second
+    Second,
+    FirstPopup
 }

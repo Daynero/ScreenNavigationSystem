@@ -5,24 +5,21 @@ using SecondScreen;
 public class ScreenControllerFactory
 {
     public AbstractScreenController CreateController(AbstractScreenView screenView,
-        ScreenNavigationSystem navigationSystem, RegistrationStateManager registrationStateManager = null)
+        UINavigator uiNavigator)
     {
-        switch (screenView)
+        return screenView switch
         {
-            case FirstScreenView firstScreenView:
-                return new FirstScreenController(firstScreenView, navigationSystem);
-            case SecondScreenView secondScreenView:
-                return new SecondScreenController(secondScreenView, navigationSystem, registrationStateManager);
-            default:
-                return new GenericScreenController(screenView, navigationSystem);
-        }
+            FirstScreenView firstScreenView => new FirstScreenController(firstScreenView, uiNavigator),
+            SecondScreenView secondScreenView => new SecondScreenController(secondScreenView, uiNavigator),
+            _ => new GenericScreenController(screenView, uiNavigator)
+        };
     }
 }
 
 public class GenericScreenController : AbstractScreenController
 {
-    public GenericScreenController(AbstractScreenView screenView, ScreenNavigationSystem screenNavigationSystem)
-        : base(screenView, screenNavigationSystem)
+    public GenericScreenController(AbstractScreenView screenView, UINavigator uiNavigator)
+        : base(screenView, uiNavigator)
     {
     }
 }

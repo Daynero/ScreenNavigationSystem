@@ -8,15 +8,15 @@ namespace Animations
     {
         private readonly AbstractScreenView _closingScreen;
         private readonly AbstractScreenView _openingScreen;
-        private readonly ScreenTransitionDirection _direction;
+        private readonly ScreenTransitionType _type;
 
         private const float AnimationDuration = 0.2f; 
 
-        public ScreenAnimationController(AbstractScreenView closingScreen, AbstractScreenView openingScreen, ScreenTransitionDirection direction)
+        public ScreenAnimationController(AbstractScreenView closingScreen, AbstractScreenView openingScreen, ScreenTransitionType type)
         {
             _closingScreen = closingScreen;
             _openingScreen = openingScreen;
-            _direction = direction;
+            _type = type;
         }
 
         public void PlayAnimation()
@@ -58,13 +58,13 @@ namespace Animations
             closingStartPos = _closingScreen.transform.position;
             closingEndPos = closingStartPos;
 
-            switch (_direction)
+            switch (_type)
             {
-                case ScreenTransitionDirection.LeftToRight:
+                case ScreenTransitionType.LeftToRight:
                     startPos = closingStartPos - screenWidth;
                     closingEndPos = closingStartPos + screenWidth;
                     break;
-                case ScreenTransitionDirection.RightToLeft:
+                case ScreenTransitionType.RightToLeft:
                     startPos = closingStartPos + screenWidth;
                     closingEndPos = closingStartPos - screenWidth;
                     break;

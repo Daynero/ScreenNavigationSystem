@@ -1,102 +1,55 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommonPanels;
-using Tools;
+using ScreensRoot;
+using UINavigationModule;
 using UnityEngine;
 
-namespace ScreensRoot
+public class AbstractScreenController : AbstractBaseController
 {
-    public abstract class AbstractScreenController : IDisposable
+    private readonly AbstractScreenView ScreenView;
+    private List<IResettable> _resettableComponents;
+    protected Canvas Canvas;
+
+    public AbstractScreenController(AbstractScreenView screenView, IUINavigator uiNavigator) : base(uiNavigator)
     {
-        private AbstractScreenView ScreenView { get; set; }
-        protected ScreenNavigationSystem ScreenNavigationSystem { get; private set; }
-        protected EventSubscriptions EventSubscriptions { get; private set; }
-        protected Canvas Canvas;
-        private List<IResettable> _resettableComponents;
-        protected bool isResetComponent = true;
+        ScreenView = screenView;
 
-        protected AbstractScreenController(AbstractScreenView screenView, ScreenNavigationSystem screenNavigationSystem)
-        {
-            ScreenView = screenView;
-            ScreenNavigationSystem = screenNavigationSystem;
-            EventSubscriptions = new();
-            ScreenView.ScreenEnabled += ScreenEnabledHandler;
-            ScreenView.ScreenDisable += ScreenDisabledHandler;
-            
-            InitializeResettableComponents();
-        }
-
-        private void InitializeResettableComponents()
-        {
-            _resettableComponents = ScreenView.GetComponentsInChildren<MonoBehaviour>()
-                .OfType<IResettable>()
-                .ToList();
-        }
-
-        private void ScreenEnabledHandler()
-        {
-            ResetComponents();
-            OnShow();
-        }
-
-        private void ScreenDisabledHandler()
-        {
-            ResetComponents();
-            OnHide();
-        }
-
-        protected virtual void SettingCanvas()
-        {
-            if (Canvas == null)
-            {
-                Canvas = ScreenView.GetComponentInParent<Canvas>();
-            }
-            Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        }
-
-        public void Show()
-        {
-            ScreenView.gameObject.SetActive(true);
-            ScreenView.EnableInteraction();
-        }
-
-        protected virtual void OnShow()
-        {
-            SettingCanvas();
-        }
+        ScreenView.ViewEnabled += () => OnEnableHandler(_resettableComponents);
+        ScreenView.ViewDisabled += () => OnDisableHandler(_resettableComponents);
         
-        public void Hide()
-        {
-            ScreenView.gameObject.SetActive(false);
-        }
-        
-        protected virtual void OnHide() { }
+        InitializeResettableComponents();
+    }
 
-        private void ResetComponents()
-        {
-            if(!isResetComponent) return;
-            
-            foreach (var resettable in _resettableComponents)
-            {
-                resettable.ResetToDefault();
-            }
-        }
+    private void InitializeResettableComponents()
+    {
+        _resettableComponents = ScreenView.GetComponentsInChildren<MonoBehaviour>()
+            .OfType<IResettable>()
+            .ToList();
+    }
 
-        public void ShowWithData<T>(T data) where T : BaseVm
-        {
-            Show();
-            HandleData(data);
-        }
+    protected override Component GetMainComponent()
+    {
+        return ScreenView;
+    }
 
-        protected virtual void HandleData<T>(T data) where T : BaseVm
-        {
-            // Handle specific data
-        }
+    protected override void OnShow()
+    {
+        base.OnShow();
+        SettingCanvas();
+    }
 
-        public virtual void Dispose()
+    protected override void EnableInteraction()
+    {
+        ScreenView.EnableInteraction();
+    }
+
+    protected virtual void SettingCanvas()
+    {
+        if (Canvas == null)
         {
-            EventSubscriptions.ClearSubscriptions();
+            Canvas = ScreenView.GetComponentInParent<Canvas>();
         }
+        Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
     }
 }
