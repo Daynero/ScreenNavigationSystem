@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Animations;
-using ScreensRoot;
+using UIModule.Animations;
+using UIModule.BaseViewAndControllers;
+using UIModule.Screens;
 using UnityEngine;
 
+namespace UIModule.NavigationSystems
+{
     public class ScreenNavigationSystem
     {
         private readonly Dictionary<ScreenName, AbstractScreenView> _screens;
@@ -145,3 +148,4 @@ using UnityEngine;
             }
         }
     }
+}

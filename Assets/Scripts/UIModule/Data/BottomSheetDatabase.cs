@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DefaultNamespace;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.BottomSheets;
 using UnityEngine;
 
-namespace Data
+namespace UIModule.Data
 {
     [CreateAssetMenu(fileName = "BottomSheetDatabase", menuName = "ScriptableObjects/BottomSheets/BottomSheetDatabase", order = 103)]
     public class BottomSheetDatabase : ScriptableObject

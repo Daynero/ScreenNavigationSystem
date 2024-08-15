@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace UIModule.BottomSheets
 {
     public enum BottomSheetName
     {

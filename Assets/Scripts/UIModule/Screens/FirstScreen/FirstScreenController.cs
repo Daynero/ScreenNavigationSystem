@@ -1,8 +1,9 @@
-using Animations;
-using DefaultNamespace;
-using ScreensRoot;
+using UIModule.Animations;
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+using UIModule.Popups;
 
-namespace FirstScreen
+namespace UIModule.Screens.FirstScreen
 {
     public class FirstScreenController : AbstractScreenController
     {

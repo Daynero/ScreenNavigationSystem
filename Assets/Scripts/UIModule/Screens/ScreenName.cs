@@ -1,7 +1,10 @@
-public enum ScreenName
+namespace UIModule.Screens
 {
-    None,
-    First,
-    Second,
-    FirstPopup
+    public enum ScreenName
+    {
+        None,
+        First,
+        Second,
+        FirstPopup
+    }
 }

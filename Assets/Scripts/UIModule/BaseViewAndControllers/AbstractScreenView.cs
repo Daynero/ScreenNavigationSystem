@@ -1,7 +1,7 @@
-using System;
+using UIModule.Screens;
 using UnityEngine;
 
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     [RequireComponent(typeof(CanvasGroup))] 
     public abstract class AbstractScreenView : AbstractBaseView

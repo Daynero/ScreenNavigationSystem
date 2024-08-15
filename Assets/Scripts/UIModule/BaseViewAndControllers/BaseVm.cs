@@ -1,4 +1,4 @@
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     public class BaseVm
     {

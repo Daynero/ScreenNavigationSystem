@@ -1,4 +1,4 @@
-namespace Animations
+namespace UIModule.Animations
 {
     public enum PopupTransitionType
     {

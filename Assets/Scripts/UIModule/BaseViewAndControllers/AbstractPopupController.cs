@@ -1,47 +1,50 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonPanels;
-using ScreensRoot;
+using UIModule.NavigationSystems;
+using UIModule.Tools;
 using UnityEngine;
 
-public class AbstractPopupController : AbstractBaseController
+namespace UIModule.BaseViewAndControllers
 {
-    private readonly AbstractPopupView _popupView;
-    private List<IResettable> _resettableComponents;
-
-    public event Action OnPopupClosed; // Додано івент для повідомлення про закриття попапа
-
-    public AbstractPopupController(AbstractPopupView popupView, IUINavigator uiNavigator) : base(uiNavigator)
+    public class AbstractPopupController : AbstractBaseController
     {
-        _popupView = popupView;
+        private readonly AbstractPopupView _popupView;
+        private List<IResettable> _resettableComponents;
 
-        _popupView.ViewEnabled += () => OnEnableHandler(_resettableComponents);
-        _popupView.ViewDisabled += () => OnDisableHandler(_resettableComponents);
+        public event Action OnPopupClosed; // Додано івент для повідомлення про закриття попапа
 
-        InitializeResettableComponents();
-    }
+        public AbstractPopupController(AbstractPopupView popupView, IUINavigator uiNavigator) : base(uiNavigator)
+        {
+            _popupView = popupView;
 
-    private void InitializeResettableComponents()
-    {
-        _resettableComponents = _popupView.GetComponentsInChildren<MonoBehaviour>()
-            .OfType<IResettable>()
-            .ToList();
-    }
+            _popupView.ViewEnabled += () => OnEnableHandler(_resettableComponents);
+            _popupView.ViewDisabled += () => OnDisableHandler(_resettableComponents);
 
-    protected override Component GetMainComponent()
-    {
-        return _popupView;
-    }
+            InitializeResettableComponents();
+        }
 
-    protected override void EnableInteraction()
-    {
-        _popupView.EnableInteraction();
-    }
+        private void InitializeResettableComponents()
+        {
+            _resettableComponents = _popupView.GetComponentsInChildren<MonoBehaviour>()
+                .OfType<IResettable>()
+                .ToList();
+        }
 
-    protected void Close()
-    {
-        _popupView.gameObject.SetActive(false); // Деактивація попапа
-        OnPopupClosed?.Invoke(); // Виклик івенту
+        protected override Component GetMainComponent()
+        {
+            return _popupView;
+        }
+
+        protected override void EnableInteraction()
+        {
+            _popupView.EnableInteraction();
+        }
+
+        protected void Close()
+        {
+            _popupView.gameObject.SetActive(false); // Деактивація попапа
+            OnPopupClosed?.Invoke(); // Виклик івенту
+        }
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using Newtonsoft.Json;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+using UIModule.Screens;
 using UnityEngine;
 
 public class RegistrationStateManager

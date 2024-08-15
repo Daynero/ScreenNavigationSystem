@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace UIModule.Popups
 {
     public enum PopupName
     {

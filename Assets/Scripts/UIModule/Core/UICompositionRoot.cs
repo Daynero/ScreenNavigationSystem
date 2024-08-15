@@ -1,94 +1,100 @@
 using System.Collections.Generic;
-using Data;
-using DefaultNamespace;
-using FirstScreen;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.BottomSheets;
+using UIModule.Core.Factories;
+using UIModule.Data;
+using UIModule.NavigationSystems;
+using UIModule.Popups;
+using UIModule.Screens;
 using UnityEngine;
 
-public class UICompositionRoot : MonoBehaviour
+namespace UIModule.Core
 {
-    [Header("Root Objects")] 
-    [SerializeField] private Transform screenContainer;
-    [SerializeField] private Transform popupContainer;
-    [SerializeField] private Transform bottomSheetContainer;
-    [SerializeField] private ScreenDatabase screenDatabase;
-    [SerializeField] private PopupDatabase popupDatabase;
-    [SerializeField] private BottomSheetDatabase bottomSheetDatabase;
-    [SerializeField] private ScreenName defaultScreenName;
-
-    private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
-    private readonly Dictionary<PopupName, AbstractPopupView> _popups = new();
-    private readonly Dictionary<BottomSheetName, AbstractBottomSheetView> _sheets = new();
-    private readonly Dictionary<AbstractPopupView, AbstractPopupController> _popupControllers = new();
-    private readonly Dictionary<AbstractScreenView, AbstractScreenController> _screenControllers = new();
-    private readonly Dictionary<AbstractBottomSheetView, AbstractBottomSheetController> _sheetControllers = new();
-    private UINavigator _uiNavigator;
-    private ScreenControllerFactory _screenControllerFactory;
-    private PopupControllerFactory _popupControllerFactory;
-    private BottomSheetControllerFactory _bottomSheetControllerFactory;
-
-    private void Awake()
+    public class UICompositionRoot : MonoBehaviour
     {
-        Initialize();
-    }
+        [Header("Root Objects")] 
+        [SerializeField] private Transform screenContainer;
+        [SerializeField] private Transform popupContainer;
+        [SerializeField] private Transform bottomSheetContainer;
+        [SerializeField] private ScreenDatabase screenDatabase;
+        [SerializeField] private PopupDatabase popupDatabase;
+        [SerializeField] private BottomSheetDatabase bottomSheetDatabase;
+        [SerializeField] private ScreenName defaultScreenName;
 
-    private void Initialize()
-    {
-        _uiNavigator = new UINavigator(_screens, _popups, _sheets, defaultScreenName);
-        _screenControllerFactory = new ScreenControllerFactory();
-        _popupControllerFactory = new PopupControllerFactory();
-        _bottomSheetControllerFactory = new BottomSheetControllerFactory();
+        private readonly Dictionary<ScreenName, AbstractScreenView> _screens = new();
+        private readonly Dictionary<PopupName, AbstractPopupView> _popups = new();
+        private readonly Dictionary<BottomSheetName, AbstractBottomSheetView> _sheets = new();
+        private readonly Dictionary<AbstractPopupView, AbstractPopupController> _popupControllers = new();
+        private readonly Dictionary<AbstractScreenView, AbstractScreenController> _screenControllers = new();
+        private readonly Dictionary<AbstractBottomSheetView, AbstractBottomSheetController> _sheetControllers = new();
+        private UINavigator _uiNavigator;
+        private ScreenControllerFactory _screenControllerFactory;
+        private PopupControllerFactory _popupControllerFactory;
+        private BottomSheetControllerFactory _bottomSheetControllerFactory;
 
-        CreateScreen(defaultScreenName);
-        _uiNavigator.InitScreenNavigation(_screenControllers, CreateScreen);
-        _uiNavigator.InitPopupNavigation(_popupControllers, CreatePopup);
-        _uiNavigator.InitBottomSheetNavigation(_sheetControllers, CreateBottomSheet);
-
-        _uiNavigator.Show(defaultScreenName);
-    }
-
-    private void CreateScreen(ScreenName screenName)
-    {
-        var screenView = screenDatabase[screenName];
-        if (screenView != null)
+        private void Awake()
         {
-            var screenViewInstance = Instantiate(screenView, screenContainer);
-            screenViewInstance.gameObject.SetActive(false);
-
-            AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance, _uiNavigator);
-
-            _screens.Add(screenName, screenViewInstance);
-            _screenControllers.Add(screenViewInstance, controller);
+            Initialize();
         }
-    }
 
-    private void CreatePopup(PopupName popupName)
-    {
-        var popupView = popupDatabase[popupName];
-        if (popupView != null)
+        private void Initialize()
         {
-            var popupViewInstance = Instantiate(popupView, popupContainer);
-            popupViewInstance.gameObject.SetActive(false);
+            _uiNavigator = new UINavigator(_screens, _popups, _sheets, defaultScreenName);
+            _screenControllerFactory = new ScreenControllerFactory();
+            _popupControllerFactory = new PopupControllerFactory();
+            _bottomSheetControllerFactory = new BottomSheetControllerFactory();
 
-            AbstractPopupController controller = _popupControllerFactory.CreateController(popupViewInstance, _uiNavigator);
+            CreateScreen(defaultScreenName);
+            _uiNavigator.InitScreenNavigation(_screenControllers, CreateScreen);
+            _uiNavigator.InitPopupNavigation(_popupControllers, CreatePopup);
+            _uiNavigator.InitBottomSheetNavigation(_sheetControllers, CreateBottomSheet);
 
-            _popups.Add(popupName, popupViewInstance);
-            _popupControllers.Add(popupViewInstance, controller);
+            _uiNavigator.Show(defaultScreenName);
         }
-    }
 
-    private void CreateBottomSheet(BottomSheetName sheetName)
-    {
-        var sheetView = bottomSheetDatabase[sheetName];
-        if (sheetView != null)
+        private void CreateScreen(ScreenName screenName)
         {
-            var sheetViewInstance = Instantiate(sheetView, bottomSheetContainer);
-            sheetViewInstance.gameObject.SetActive(false);
+            var screenView = screenDatabase[screenName];
+            if (screenView != null)
+            {
+                var screenViewInstance = Instantiate(screenView, screenContainer);
+                screenViewInstance.gameObject.SetActive(false);
 
-            AbstractBottomSheetController controller = _bottomSheetControllerFactory.CreateController(sheetViewInstance, _uiNavigator);
+                AbstractScreenController controller = _screenControllerFactory.CreateController(screenViewInstance, _uiNavigator);
 
-            _sheets.Add(sheetName, sheetViewInstance);
-            _sheetControllers.Add(sheetViewInstance, controller);
+                _screens.Add(screenName, screenViewInstance);
+                _screenControllers.Add(screenViewInstance, controller);
+            }
+        }
+
+        private void CreatePopup(PopupName popupName)
+        {
+            var popupView = popupDatabase[popupName];
+            if (popupView != null)
+            {
+                var popupViewInstance = Instantiate(popupView, popupContainer);
+                popupViewInstance.gameObject.SetActive(false);
+
+                AbstractPopupController controller = _popupControllerFactory.CreateController(popupViewInstance, _uiNavigator);
+
+                _popups.Add(popupName, popupViewInstance);
+                _popupControllers.Add(popupViewInstance, controller);
+            }
+        }
+
+        private void CreateBottomSheet(BottomSheetName sheetName)
+        {
+            var sheetView = bottomSheetDatabase[sheetName];
+            if (sheetView != null)
+            {
+                var sheetViewInstance = Instantiate(sheetView, bottomSheetContainer);
+                sheetViewInstance.gameObject.SetActive(false);
+
+                AbstractBottomSheetController controller = _bottomSheetControllerFactory.CreateController(sheetViewInstance, _uiNavigator);
+
+                _sheets.Add(sheetName, sheetViewInstance);
+                _sheetControllers.Add(sheetViewInstance, controller);
+            }
         }
     }
 }

@@ -1,22 +1,25 @@
-using System;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
 
-public class BottomSheetControllerFactory
+namespace UIModule.Core.Factories
 {
-    public AbstractBottomSheetController CreateController(AbstractBottomSheetView bottomSheetView,
-        UINavigator uiNavigator)
+    public class BottomSheetControllerFactory
     {
-        return bottomSheetView switch
+        public AbstractBottomSheetController CreateController(AbstractBottomSheetView bottomSheetView,
+            UINavigator uiNavigator)
         {
-            _ => new GenericBottomSheetController(bottomSheetView, uiNavigator)
-        };
+            return bottomSheetView switch
+            {
+                _ => new GenericBottomSheetController(bottomSheetView, uiNavigator)
+            };
+        }
     }
-}
 
-public class GenericBottomSheetController : AbstractBottomSheetController
-{
-    public GenericBottomSheetController(AbstractBottomSheetView bottomSheetView, UINavigator uiNavigator)
-        : base(bottomSheetView, uiNavigator)
+    public class GenericBottomSheetController : AbstractBottomSheetController
     {
+        public GenericBottomSheetController(AbstractBottomSheetView bottomSheetView, UINavigator uiNavigator)
+            : base(bottomSheetView, uiNavigator)
+        {
+        }
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.Screens;
 using UnityEngine;
 
-namespace Data
+namespace UIModule.Data
 {
     [CreateAssetMenu(fileName = "PanelDatabase", menuName = "ScriptableObjects/Panels/PanelDatabase", order = 101)]
     public class ScreenDatabase : ScriptableObject

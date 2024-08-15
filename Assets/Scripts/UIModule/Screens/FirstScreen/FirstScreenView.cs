@@ -1,9 +1,9 @@
-using ScreensRoot;
 using TMPro;
+using UIModule.BaseViewAndControllers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FirstScreen
+namespace UIModule.Screens.FirstScreen
 {
     public class FirstScreenView : AbstractScreenView
     {

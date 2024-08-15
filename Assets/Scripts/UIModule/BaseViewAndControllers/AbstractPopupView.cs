@@ -1,6 +1,6 @@
-using DefaultNamespace;
+using UIModule.Popups;
 
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     public abstract class AbstractPopupView : AbstractBaseView
     {

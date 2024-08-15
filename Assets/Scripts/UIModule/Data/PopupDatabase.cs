@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DefaultNamespace;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UIModule.Popups;
 using UnityEngine;
 
-namespace Data
+namespace UIModule.Data
 {
     [CreateAssetMenu(fileName = "PopupDatabase", menuName = "ScriptableObjects/Popups/PopupDatabase", order = 102)]
     public class PopupDatabase : ScriptableObject

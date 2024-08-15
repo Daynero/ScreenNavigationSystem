@@ -1,52 +1,54 @@
 using System;
-using Animations;
-using UnityEngine;
 using DG.Tweening;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
+using UnityEngine;
 
-public class PopupAnimationController
+namespace UIModule.Animations
 {
-    private const float AnimationDuration = 0.5f;
-
-    public void PlayAnimation(AbstractPopupView popupView, PopupTransitionType transitionType, Action onComplete)
+    public class PopupAnimationController
     {
-        SetPopupInteractable(popupView, false);
-        popupView.gameObject.SetActive(true);
-        var rectTransform = popupView.GetComponent<RectTransform>();
+        private const float AnimationDuration = 0.5f;
 
-        switch (transitionType)
+        public void PlayAnimation(AbstractPopupView popupView, PopupTransitionType transitionType, Action onComplete)
         {
-            case PopupTransitionType.Fade:
-                var canvasGroup = rectTransform.GetComponent<CanvasGroup>();
-                canvasGroup.alpha = 0f;
-                canvasGroup.DOFade(1f, AnimationDuration).OnComplete(() =>
-                {
-                    onComplete?.Invoke();
-                    SetPopupInteractable(popupView, true);
-                });
-                break;
+            SetPopupInteractable(popupView, false);
+            popupView.gameObject.SetActive(true);
+            var rectTransform = popupView.GetComponent<RectTransform>();
 
-            case PopupTransitionType.Scale:
-                rectTransform.localScale = Vector3.zero;
-                rectTransform.DOScale(Vector3.one, AnimationDuration).OnComplete(() =>
-                {
-                    onComplete?.Invoke();
-                    SetPopupInteractable(popupView, true);
-                });
-                break;
+            switch (transitionType)
+            {
+                case PopupTransitionType.Fade:
+                    var canvasGroup = rectTransform.GetComponent<CanvasGroup>();
+                    canvasGroup.alpha = 0f;
+                    canvasGroup.DOFade(1f, AnimationDuration).OnComplete(() =>
+                    {
+                        onComplete?.Invoke();
+                        SetPopupInteractable(popupView, true);
+                    });
+                    break;
 
-            case PopupTransitionType.None:
-                onComplete?.Invoke();
-                break;
+                case PopupTransitionType.Scale:
+                    rectTransform.localScale = Vector3.zero;
+                    rectTransform.DOScale(Vector3.one, AnimationDuration).OnComplete(() =>
+                    {
+                        onComplete?.Invoke();
+                        SetPopupInteractable(popupView, true);
+                    });
+                    break;
+
+                case PopupTransitionType.None:
+                    onComplete?.Invoke();
+                    break;
+            }
         }
-    }
 
-    private void SetPopupInteractable(AbstractPopupView popupView, bool interactable)
-    {
-        var canvasGroup = popupView.GetComponent<CanvasGroup>();
-        if (canvasGroup != null)
+        private void SetPopupInteractable(AbstractPopupView popupView, bool interactable)
         {
-            canvasGroup.interactable = interactable;
+            var canvasGroup = popupView.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.interactable = interactable;
+            }
         }
     }
 }

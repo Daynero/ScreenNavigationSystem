@@ -1,7 +1,9 @@
-using Animations;
-using FirstScreen;
+using UIModule.Animations;
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+using UIModule.Screens.FirstScreen;
 
-namespace SecondScreen
+namespace UIModule.Screens.SecondScreen
 {
     public class SecondScreenController : AbstractScreenController
     {

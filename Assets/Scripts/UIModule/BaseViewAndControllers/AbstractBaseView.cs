@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     public abstract class AbstractBaseView : MonoBehaviour
     {

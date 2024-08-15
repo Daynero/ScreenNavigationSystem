@@ -1,8 +1,8 @@
 using System.Collections;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
 using UnityEngine;
 
-namespace Animations
+namespace UIModule.Animations
 {
     public class ScreenAnimationController
     {

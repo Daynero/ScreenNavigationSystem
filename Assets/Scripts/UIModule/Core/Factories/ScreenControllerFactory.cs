@@ -1,25 +1,29 @@
-using FirstScreen;
-using ScreensRoot;
-using SecondScreen;
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+using UIModule.Screens.FirstScreen;
+using UIModule.Screens.SecondScreen;
 
-public class ScreenControllerFactory
+namespace UIModule.Core.Factories
 {
-    public AbstractScreenController CreateController(AbstractScreenView screenView,
-        UINavigator uiNavigator)
+    public class ScreenControllerFactory
     {
-        return screenView switch
+        public AbstractScreenController CreateController(AbstractScreenView screenView,
+            UINavigator uiNavigator)
         {
-            FirstScreenView firstScreenView => new FirstScreenController(firstScreenView, uiNavigator),
-            SecondScreenView secondScreenView => new SecondScreenController(secondScreenView, uiNavigator),
-            _ => new GenericScreenController(screenView, uiNavigator)
-        };
+            return screenView switch
+            {
+                FirstScreenView firstScreenView => new FirstScreenController(firstScreenView, uiNavigator),
+                SecondScreenView secondScreenView => new SecondScreenController(secondScreenView, uiNavigator),
+                _ => new GenericScreenController(screenView, uiNavigator)
+            };
+        }
     }
-}
 
-public class GenericScreenController : AbstractScreenController
-{
-    public GenericScreenController(AbstractScreenView screenView, UINavigator uiNavigator)
-        : base(screenView, uiNavigator)
+    public class GenericScreenController : AbstractScreenController
     {
+        public GenericScreenController(AbstractScreenView screenView, UINavigator uiNavigator)
+            : base(screenView, uiNavigator)
+        {
+        }
     }
 }

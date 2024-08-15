@@ -1,4 +1,4 @@
-namespace CommonPanels
+namespace UIModule.Tools
 {
     public interface IResettable
     {

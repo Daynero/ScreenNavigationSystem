@@ -1,6 +1,6 @@
-using DefaultNamespace;
+using UIModule.BottomSheets;
 
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     public abstract class AbstractBottomSheetView : AbstractBaseView
     {

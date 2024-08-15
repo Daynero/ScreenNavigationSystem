@@ -1,9 +1,9 @@
-using ScreensRoot;
 using TMPro;
+using UIModule.BaseViewAndControllers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SecondScreen
+namespace UIModule.Screens.SecondScreen
 {
     public class SecondScreenView : AbstractScreenView
     {

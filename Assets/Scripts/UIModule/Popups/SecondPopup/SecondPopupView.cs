@@ -1,9 +1,8 @@
-using DefaultNamespace;
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SecondPopup
+namespace UIModule.Popups.SecondPopup
 {
     public class SecondPopupView : AbstractPopupView
     {

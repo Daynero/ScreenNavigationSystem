@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using CommonPanels;
 using Tools;
+using UIModule.NavigationSystems;
+using UIModule.Tools;
 using UnityEngine;
 
-namespace ScreensRoot
+namespace UIModule.BaseViewAndControllers
 {
     public abstract class AbstractBaseController : IDisposable
     {

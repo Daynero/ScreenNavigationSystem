@@ -1,39 +1,42 @@
 using System.Collections.Generic;
 using System.Linq;
-using CommonPanels;
-using ScreensRoot;
+using UIModule.NavigationSystems;
+using UIModule.Tools;
 using UnityEngine;
 
-public class AbstractBottomSheetController : AbstractBaseController
+namespace UIModule.BaseViewAndControllers
 {
-    private readonly AbstractBottomSheetView _bottomSheetView;
-    private List<IResettable> _resettableComponents;
-
-    public AbstractBottomSheetController(AbstractBottomSheetView bottomSheetView, IUINavigator uiNavigator) :
-        base(uiNavigator)
+    public class AbstractBottomSheetController : AbstractBaseController
     {
-        _bottomSheetView = bottomSheetView;
+        private readonly AbstractBottomSheetView _bottomSheetView;
+        private List<IResettable> _resettableComponents;
 
-        _bottomSheetView.ViewEnabled += () => OnEnableHandler(_resettableComponents);
-        _bottomSheetView.ViewDisabled += () => OnDisableHandler(_resettableComponents);
+        public AbstractBottomSheetController(AbstractBottomSheetView bottomSheetView, IUINavigator uiNavigator) :
+            base(uiNavigator)
+        {
+            _bottomSheetView = bottomSheetView;
 
-        InitializeResettableComponents();
-    }
+            _bottomSheetView.ViewEnabled += () => OnEnableHandler(_resettableComponents);
+            _bottomSheetView.ViewDisabled += () => OnDisableHandler(_resettableComponents);
 
-    private void InitializeResettableComponents()
-    {
-        _resettableComponents = _bottomSheetView.GetComponentsInChildren<MonoBehaviour>()
-            .OfType<IResettable>()
-            .ToList();
-    }
+            InitializeResettableComponents();
+        }
 
-    protected override Component GetMainComponent()
-    {
-        return _bottomSheetView;
-    }
+        private void InitializeResettableComponents()
+        {
+            _resettableComponents = _bottomSheetView.GetComponentsInChildren<MonoBehaviour>()
+                .OfType<IResettable>()
+                .ToList();
+        }
 
-    protected override void EnableInteraction()
-    {
-        _bottomSheetView.EnableInteraction();
+        protected override Component GetMainComponent()
+        {
+            return _bottomSheetView;
+        }
+
+        protected override void EnableInteraction()
+        {
+            _bottomSheetView.EnableInteraction();
+        }
     }
 }

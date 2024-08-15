@@ -1,5 +1,8 @@
 
-namespace FirstPopup
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+
+namespace UIModule.Popups.FirstPopup
 {
     public class FirstPopupController : AbstractPopupController
     {

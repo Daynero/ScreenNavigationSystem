@@ -1,6 +1,6 @@
-using ScreensRoot;
+using UIModule.BaseViewAndControllers;
 
-namespace FirstScreen
+namespace UIModule.Screens.FirstScreen
 {
     public class FirstScreenVM : BaseVm
     {

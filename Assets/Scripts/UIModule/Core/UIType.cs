@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace UIModule.Core
 {
     public enum UIType
     {

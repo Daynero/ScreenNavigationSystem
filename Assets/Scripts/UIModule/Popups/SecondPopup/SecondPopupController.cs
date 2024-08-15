@@ -1,5 +1,8 @@
 
-namespace SecondPopup
+using UIModule.BaseViewAndControllers;
+using UIModule.NavigationSystems;
+
+namespace UIModule.Popups.SecondPopup
 {
     public class SecondPopupController : AbstractPopupController
     {
